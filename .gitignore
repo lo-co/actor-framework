@@ -1,0 +1,8 @@
+build/
+sdkconfig
+sdkconfig.old
+
+.vscode/
+.devcontainer/
+CMakeFiles/
+CMakeCache.txt
