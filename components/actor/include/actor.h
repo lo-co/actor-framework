@@ -66,14 +66,6 @@ typedef struct actor_s actor_t;
 /** Definition of the dispatch handler for each class */
 typedef void (*DispatchHandler)(actor_t * const me, actor_msg_t const * const msg);
 
-/** Definition of actor object */
-struct actor_s {
-    TaskHandle_t main_task;     ///< Main actor task that handles incoming messages
-    QueueHandle_t msg_queue;    ///< Message queue to send messages
-    DispatchHandler dispatch;   ///< Dispatch function for handling messages
-    // Private actor parameters after this
-};
-
 /*******************************************************************************
  * Function Prototypes
  ******************************************************************************/
@@ -84,7 +76,7 @@ struct actor_s {
  * @param me
  * @param dispatch
  */
-void actor_ctor(actor_t *const me, DispatchHandler dispatch);
+void actor_ctor(actor_t const * parent, actor_t **me, DispatchHandler dispatch);
 
 /**
  * @brief Start the actor processes
@@ -104,3 +96,5 @@ void actor_start(actor_t *const me, uint8_t prio, uint32_t queue_length, uint32_
  * @param msg
  */
 void actor_post(actor_t *const me, actor_msg_t const * const msg);
+
+void actor_add_child(actor_t * const me, actor_t type, DispatchHandler dispatch);

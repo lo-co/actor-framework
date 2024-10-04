@@ -60,7 +60,7 @@
 
 /** Actor object that inherits from the base actor object */
 typedef struct blinky_actor_s {
-    actor_t super;          ///< Base class
+    actor_t *super;          ///< Base class
     bool current_state;     ///< Current state of the led
 } blinky_actor_t;
 
@@ -112,10 +112,10 @@ void vApplicationTickHook(void) {
 void app_main(void)
 {
     ESP_LOGI(TAG, "Starting main...");
-    actor_ctor(&blinky_actor.super, blinky_message_handler);
-    actor_start((actor_t *)&blinky_actor, 1, 10, 2048);
+    actor_ctor(NULL, &blinky_actor.super, blinky_message_handler);
+    actor_start(blinky_actor.super, 1, 10, 2048);
 
-    time_event_ctor(&blink_time_event, BLINK_SIG, (actor_t *)&blinky_actor);
+    time_event_ctor(&blink_time_event, BLINK_SIG, blinky_actor.super);
     time_event_arm(&blink_time_event, 100, 100);
 }
 
